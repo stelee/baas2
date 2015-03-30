@@ -1,0 +1,24 @@
+{
+    "version": "1.4.1",
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs",
+        "declaration": false,
+        "noImplicitAny": false,
+        "removeComments": true,
+        "noLib": false,
+        "outDir": "../build"
+    },
+    "filesGlob": [
+        "./**/*.ts",
+        "!./node_modules/**/*.ts"
+    ],
+    "files": [
+        "./handlers/baseHandler.ts",
+        "./handlers/index.ts",
+        "./router/handlerDef.ts",
+        "./router/router.ts",
+        "./service.ts",
+        "./utils/log.ts"
+    ]
+}
