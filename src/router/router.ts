@@ -74,7 +74,7 @@ export class Router{
       });
     }
 
-    public process(req,res){
+    public process(req,res,data=null){
       var pathname=url.parse(req.url).pathname;
       var def=this.route(pathname);
       if(def===null)

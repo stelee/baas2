@@ -1,7 +1,7 @@
-import handler = require("./baseHandler");
+import handler = require("../libs/baseHandler");
 
 class Index extends handler.BaseHandler{
-  response:any;
+
   public get(){
     this.writeToJSON("hello,world")
   }

@@ -1,5 +1,10 @@
-declare function require(path:String);
+/// <reference path='typings/node/node.d.ts' />
+/// <reference path='typings/mongoose/mongoose.d.ts' />
+
 type TRouterTable={[id:string]:string};
+
+import mwp=require("./libs/middleWareProcessor");
+import mw=require("./middlewares/dummy");
 
 module Main{
 
@@ -24,12 +29,24 @@ module Main{
     public run(config:Config){
       logger.info("start the service at "+config.listener+" : "+config.port);
       router.config(config.routerTable);
+      var middlewareProcessor=mwp.MiddleWareProcessor.getInstance();
       http.createServer((req,res)=>{
         //TODO:
         //you can add middlewhere here
         //should use promise to process the req, res
         //because middleware may be running asynchronized
-        router.process(req,res);
+        logger.debug("receive the request");
+        middlewareProcessor.register(new mw.Dummy());
+        middlewareProcessor.runAsPromise().then(function(data){
+          logger.debug("return value from middleware:" + data);
+          router.process(req,res,data);
+        }).catch(function(error){
+          logger.debug("error for middleware?");
+          logger.debug(error);
+          res.writeHeader(500,{"Content-Type" : "text/json"});
+          res.end(JSON.stringify(error));
+        });
+
       }).listen(config.port,config.listener);
     }
   }
